@@ -17,7 +17,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	username := os.Getenv("USERNAME")
+	username := os.Getenv("USERNE")
 	passwd := os.Getenv("PASSWD")
 	hostDB := os.Getenv("HOSTDB")
 	dbName := os.Getenv("DBNAME")
