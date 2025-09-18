@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"study-buddy-backend/models"
 )
 
@@ -41,7 +42,31 @@ func FindAll(db *sql.DB, teacherID string) ([]models.Lesson, error) {
 	return lessons, nil
 }
 
+func GetModulesByModuleID(db *sql.DB, moduleID string) (models.Module, error) {
+	var mod models.Module
 
+	rows, err := db.Query(`
+	SELECT module_id, module_type, module_data, lesson_id
+	FROM module
+	WHERE module_id = $1
+`, moduleID)
+
+	if err != nil {
+		return mod, err
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		err = rows.Scan(&mod.ModuleId, &mod.ModuleType, &mod.ModuleData, &mod.LessonId)
+		if err != nil {
+			return mod, err
+		}
+	} else {
+		return mod, fmt.Errorf("no module found with ID %s", moduleID)
+	}
+
+	return mod, nil
+}
 
 func GetModulesByLessonID(db *sql.DB, lessonID string) ([]models.Module, error) {
 	rows, err := db.Query(`
@@ -71,4 +96,3 @@ func GetModulesByLessonID(db *sql.DB, lessonID string) ([]models.Module, error) 
 
 	return modules, nil
 }
-

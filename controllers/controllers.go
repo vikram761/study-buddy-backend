@@ -148,6 +148,28 @@ func GenerateVnovel(dbConn *sql.DB) gin.HandlerFunc {
 	}
 }
 
+
+
+func GetModulesByModuleID(dbConn *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		moduleID := c.Param("module_id")
+		if moduleID == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "module_id is required in path"})
+			return
+		}
+
+		modules, err := db.GetModulesByModuleID(dbConn, moduleID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve modules", "details": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"modules": modules,
+		})
+	}
+}
+
 func formatPrompt(userPrompt string) string {
 	// Replaced the old prompt with the new, more detailed one.
 	// Also corrected the inconsistency between `MapsTo` and `MapsTo`.
