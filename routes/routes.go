@@ -1,12 +1,14 @@
 package routes
 
 import (
+	"database/sql"
 	"log"
+	"study-buddy-backend/controllers/auth"
 
 	"github.com/gin-gonic/gin"
 )
 
-func InitRoutes(port string) {
+func InitRoutes(port string, db *sql.DB) {
 	router := gin.Default()
 
 	router.GET("/hello", func(ctx *gin.Context) {
@@ -15,31 +17,33 @@ func InitRoutes(port string) {
 		})
 	})
 
-	auth_routes := router.Group("/auth")
+	authRoutes := router.Group("/auth")
 	{
 		// login
+		authRoutes.POST("/signup", auth.SignUpHandler(db))
+		authRoutes.POST("/login", auth.LoginHandler(db))
 		// sign up
 	}
-
-	teacher_routes := router.Group("/teacher")
-	{
-		// TECHER ROUTES
-		// eg: teacher_routes.GET, teacher_routes.POST etc
-	}
-
-	student_routes := router.Group("/student")
-	{
-		// TECHER ROUTES
-		// eg: student_routes.GET, student_routes.POST etc
-	}
-
-	chapter_routes := router.Group("/chapter")
-	{
-		// chapter routes
-		// create
-		// all
-		// ?chatperId
-	}
+	//
+	// teacher_routes := router.Group("/teacher")
+	// {
+	// 	// TECHER ROUTES
+	// 	// eg: teacher_routes.GET, teacher_routes.POST etc
+	// }
+	//
+	// student_routes := router.Group("/student")
+	// {
+	// 	// TECHER ROUTES
+	// 	// eg: student_routes.GET, student_routes.POST etc
+	// }
+	//
+	// chapter_routes := router.Group("/chapter")
+	// {
+	// 	// chapter routes
+	// 	// create
+	// 	// all
+	// 	// ?chatperId
+	// }
 
 	router.POST("/create-vnovel")
 	router.POST("/create-quiz")

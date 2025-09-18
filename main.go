@@ -22,9 +22,12 @@ func main() {
 	hostDB := os.Getenv("HOSTDB")
 	dbName := os.Getenv("DBNAME")
     port := os.Getenv("DBPORT")
+	log.Println("not connected")
 
 	// DB INIT
 	database := db.Connectdb(username, passwd, hostDB, dbName, port)
+	log.Println("connected")
+	db.CreateDB(database)
 
 	appPort := os.Getenv("PORT")
     if appPort == "" {
@@ -32,5 +35,5 @@ func main() {
     }
 	
 	// ROUTES INIT AND RUNNING THE SERVER
-	routes.InitRoutes(appPort)
+	routes.InitRoutes(appPort,database)
 }
