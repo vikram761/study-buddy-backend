@@ -17,7 +17,7 @@ func CreateModule(db *sql.DB , mod models.Module) error {
 
 func FindAllModule(db *sql.DB, teacherID string) ([]models.Module, error) {
 	rows, err := db.Query(`
-		SELECT module_id, module_type, module_data, lesson_id
+		SELECT module_id, module_type, module_data, lesson_id , module_name , module_description
 		FROM module
 		WHERE lesson_id = $1
 	`, teacherID)

@@ -45,7 +45,7 @@ func GetModulesByModuleID(db *sql.DB, moduleID string) (models.Module, error) {
 	var mod models.Module
 
 	rows, err := db.Query(`
-	SELECT module_id, module_type, module_data, lesson_id
+	SELECT module_id, module_type, module_data, lesson_id , module_name , module_desc
 	FROM module
 	WHERE module_id = $1
 `, moduleID)
@@ -56,7 +56,7 @@ func GetModulesByModuleID(db *sql.DB, moduleID string) (models.Module, error) {
 	defer rows.Close()
 
 	if rows.Next() {
-		err = rows.Scan(&mod.ModuleId, &mod.ModuleType, &mod.ModuleData, &mod.LessonId)
+		err = rows.Scan(&mod.ModuleId, &mod.ModuleType, &mod.ModuleData, &mod.LessonId , &mod.ModuleName , &mod.ModuleDesc)
 		if err != nil {
 			return mod, err
 		}
@@ -69,7 +69,7 @@ func GetModulesByModuleID(db *sql.DB, moduleID string) (models.Module, error) {
 
 func GetModulesByLessonID(db *sql.DB, lessonID string) ([]models.Module, error) {
 	rows, err := db.Query(`
-		SELECT module_id, module_type, module_data, lesson_id
+		SELECT module_id, module_type, module_data, lesson_id, module_name, module_description
 		FROM module
 		WHERE lesson_id = $1
 	`, lessonID)
@@ -82,7 +82,7 @@ func GetModulesByLessonID(db *sql.DB, lessonID string) ([]models.Module, error) 
 
 	for rows.Next() {
 		var mod models.Module
-		err := rows.Scan(&mod.ModuleId, &mod.ModuleType, &mod.ModuleData, &mod.LessonId)
+		err := rows.Scan(&mod.ModuleId, &mod.ModuleType, &mod.ModuleData, &mod.LessonId , &mod.ModuleName, &mod.ModuleDesc)
 		if err != nil {
 			return nil, err
 		}
