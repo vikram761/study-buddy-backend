@@ -76,3 +76,34 @@ func GetModulesByLessonID(dbConn *sql.DB) gin.HandlerFunc {
 	}
 }
 
+
+type JoinLesson struct {
+	StudentID string `json:"student_id"`
+};
+
+func JoinLessonByID(dbConn *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		lessonID := c.Param("lesson_id")
+		if lessonID == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "lesson_id is required in path"})
+			return
+		}
+		var res JoinLesson;
+
+		if err := c.ShouldBindJSON(&res); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "student_id is required in path"})
+			return
+		}
+
+		err := db.JoinLessonByID(dbConn, lessonID, res.StudentID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to Join Lesson", "details": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusCreated, gin.H {
+			"message" : "Student joined Lesson",
+		})
+	}
+}
+

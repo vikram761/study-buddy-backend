@@ -17,8 +17,7 @@ func CreateLesson(db *sql.DB, name, subject, teacherID string) error {
 func FindAll(db *sql.DB, teacherID string) ([]models.Lesson, error) {
 	rows, err := db.Query(`
 		SELECT lesson_id, lesson_name, teacher_id, subject
-		FROM lesson
-		WHERE teacher_id = $1
+		FROM lesson WHERE teacher_id = $1
 	`, teacherID)
 	if err != nil {
 		return nil, err
@@ -96,3 +95,14 @@ func GetModulesByLessonID(db *sql.DB, lessonID string) ([]models.Module, error) 
 
 	return modules, nil
 }
+
+func JoinLessonByID(db *sql.DB, lessonID string, studentID string) error {
+	_, err := db.Query(`
+			INSERT into stud_lesson (student_id, lesson_id)
+			VALUES ($1, $2)
+		`, studentID, lessonID)
+	return err
+}
+
+
+

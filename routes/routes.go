@@ -53,7 +53,7 @@ func InitRoutes(port string, db *sql.DB) {
 	{
 		lesson_routes.POST("/create", lesson.CreateLessonHandler(db))
 		lesson_routes.POST("/all", lesson.GetAllLesson(db))
-		lesson_routes.POST("/:lesson_id/edit", lesson.GetModulesByLessonID(db))
+		lesson_routes.POST("/:lesson_id", lesson.GetModulesByLessonID(db))
 		// chapter routes
 	}
 
@@ -61,6 +61,7 @@ func InitRoutes(port string, db *sql.DB) {
 	router.POST("/all-module", controllers.GetAllModule(db))
 	router.POST("/mod/:module_id",controllers.GetModulesByModuleID(db))
 	router.POST("/gen-vnovel", controllers.GenerateVnovel(db))
+	router.POST("/join/:lesson_id", lesson.JoinLessonByID(db))
 
 	router.NoRoute(noRoute)
 
