@@ -61,7 +61,7 @@ func InitRoutes(port string, db *sql.DB) {
 	router.POST("/create-module", controllers.CreateModule(db))
 	router.POST("/all-module", controllers.GetAllModule(db))
 	router.POST("/mod/edit", controllers.EditModuleData(db))
-	router.POST("/mod/:module_id",controllers.GetModulesByModuleID(db))
+	router.GET("/mod/:module_id",controllers.GetModulesByModuleID(db))
 	router.POST("/gen-vnovel", controllers.GenerateVnovel(db))
 	router.POST("/join/:lesson_id", lesson.JoinLessonByID(db))
 

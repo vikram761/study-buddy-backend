@@ -45,7 +45,7 @@ func GetModulesByModuleID(db *sql.DB, moduleID string) (models.Module, error) {
 	var mod models.Module
 
 	rows, err := db.Query(`
-	SELECT module_id, module_type, module_data, lesson_id , module_name , module_desc
+	SELECT module_id, module_type, module_data, lesson_id , module_name , module_description
 	FROM module
 	WHERE module_id = $1
 `, moduleID)
