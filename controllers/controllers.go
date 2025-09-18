@@ -22,9 +22,9 @@ import (
 )
 
 type CreateModuleRequest struct {
-	LessonID   string          `json:"lessonid"`
+	LessonID   string            `json:"lessonid"`
 	ModuleType models.ModuleType `json:"moduletype"`
-	ModuleData json.RawMessage `json:"moduledata"` // raw JSON, like your nested object
+	ModuleData json.RawMessage   `json:"moduledata"` // raw JSON, like your nested object
 }
 
 type ModuleAllRequest struct {
@@ -147,8 +147,6 @@ func GenerateVnovel(dbConn *sql.DB) gin.HandlerFunc {
 		})
 	}
 }
-
-
 
 func GetModulesByModuleID(dbConn *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -300,4 +298,31 @@ func extractJSON(text string) string {
 	return strings.TrimSpace(text)
 }
 
+type EditModuleRequest struct {
+	ModuleId   string          `json:"module_id"`
+	ModuleData json.RawMessage `json:"module_data"`
+	LessonId   string          `json:"lesson_id"`
+}
 
+func EditModuleData(dbConn *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var req EditModuleRequest
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		err := db.EditModule(dbConn, req.ModuleId, req.ModuleData)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error":   "Failed to create module in database",
+				"details": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusCreated, gin.H{
+			"message": "Module Edited successfully",
+		})
+	}
+}

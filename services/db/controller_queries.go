@@ -42,3 +42,11 @@ func FindAllModule(db *sql.DB, teacherID string) ([]models.Module, error) {
 
 	return modules, nil
 }
+
+func EditModule(db *sql.DB, module_id string , module_data json.RawMessage) error {
+	_, err := db.Exec(`
+		INSERT INTO module (module_data)
+		VALUES ($1) WHERE module_id = $2`, module_data,module_id,
+	)
+	return err
+}
