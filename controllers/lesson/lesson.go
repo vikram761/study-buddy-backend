@@ -107,3 +107,16 @@ func JoinLessonByID(dbConn *sql.DB) gin.HandlerFunc {
 	}
 }
 
+func GetAllJesus(dbConn *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		lessons, err := db.GetAllLessonJesus(dbConn)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"lessons": lessons,
+		})
+	}
+}

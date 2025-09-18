@@ -105,4 +105,29 @@ func JoinLessonByID(db *sql.DB, lessonID string, studentID string) error {
 }
 
 
+func GetAllLessonJesus(db *sql.DB) ([]models.Lesson,error) {
+	rows, err := db.Query(`
+		SELECT lesson_id, lesson_name, teacher_id, subject
+		FROM lesson 
+	`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
+	var lessons []models.Lesson
+
+	for rows.Next() {
+		var lesson models.Lesson
+		if err := rows.Scan(&lesson.LessonID, &lesson.LessonName, &lesson.TeacherID, &lesson.Subject); err != nil {
+			return nil, err
+		}
+		lessons = append(lessons, lesson)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return lessons, nil
+}

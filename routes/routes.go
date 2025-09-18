@@ -54,6 +54,7 @@ func InitRoutes(port string, db *sql.DB) {
 		lesson_routes.POST("/create", lesson.CreateLessonHandler(db))
 		lesson_routes.POST("/all", lesson.GetAllLesson(db))
 		lesson_routes.POST("/:lesson_id", lesson.GetModulesByLessonID(db))
+		lesson_routes.GET("/getall", lesson.GetAllJesus(db))
 		// chapter routes
 	}
 
