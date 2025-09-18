@@ -45,12 +45,11 @@ func InitRoutes(port string, db *sql.DB) {
 		lesson_routes.POST("/all",lesson.GetAllLesson(db))
 		lesson_routes.POST("/:lesson_id/edit", lesson.GetModulesByLessonID(db))
 		// chapter routes
-		// all
-		// ?chatperId
 	}
 
 	router.POST("/create-module", controllers.CreateModule(db))
 	router.POST("/all-module", controllers.CreateModule(db))
+	router.POST("/gen-vnovel", controllers.GenerateVnovel(db))
 
 	router.NoRoute(noRoute)
 
