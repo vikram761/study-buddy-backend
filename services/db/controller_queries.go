@@ -6,10 +6,10 @@ import (
 	"study-buddy-backend/models"
 )
 
-func CreateModule(db *sql.DB , lessonId, moduleType string, moduleData json.RawMessage) error {
+func CreateModule(db *sql.DB , lessonId, moduleType string, moduleData json.RawMessage , name , desc string) error {
 	_, err := db.Exec(`
-		INSERT INTO module (lesson_id, module_type, module_data)
-		VALUES ($1, $2, $3)`, lessonId,moduleType, moduleData,
+		INSERT INTO module (lesson_id, module_type, module_data , module_name , module_desc)
+		VALUES ($1, $2, $3)`, lessonId,moduleType, moduleData,name,desc,
 	)
 	return err
 }
