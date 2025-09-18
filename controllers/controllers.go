@@ -252,7 +252,7 @@ Here is a two-frame example. The first frame has a character, text, and a button
 
 You MUST adhere strictly to these rules:
 
-1.  **Canvas Boundaries**: The canvas is **600 units wide** and **360 units high**. The coordinate system starts with (0,0) at the top-left corner. All elements' positions (`+"`x`"+`, `+"`y`"+`) and dimensions (`+"`width`"+`, `+"`height`"+`) must ensure the element stays entirely within these bounds.
+1.  **Canvas Boundaries**: The canvas is **800 units wide** and **480 units high**. The coordinate system starts with (0,0) at the top-left corner. All elements' positions (`+"`x`"+`, `+"`y`"+`) and dimensions (`+"`width`"+`, `+"`height`"+`) must ensure the element stays entirely within these bounds.
 2.  **Layout**: Avoid overlapping interactive elements like buttons or important text. Ensure elements are logically placed on the screen.
 3.  **Image Grounding**: For character images, their `+"`y`"+` coordinate should be high enough (e.g., > 150) so they appear grounded at the bottom of the scene, not floating in the middle.
 4.  **Available Images**: You MUST only use the following file names for the `+"`src`"+` property of 'image' elements: `+"`'student_1.svg'`"+`, `+"`'student_2.svg'`"+`, `+"`'teacher_1.svg'`"+`, `+"`'teacher_2.svg'`"+`, `+"`'teacher_3.svg'`"+`. Do not create new image names.
