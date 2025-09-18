@@ -16,21 +16,21 @@ func CreateTeacher(db *sql.DB, name, email, hashedPass, image string) error {
 	return err
 }
 
-func GetStudentByEmail(db *sql.DB, email string) (string, string, error) {
-	var id, hashedPass string
-	err := db.QueryRow(`SELECT student_id, pass FROM students WHERE email=$1`, email).Scan(&id, &hashedPass)
+func GetStudentByEmail(db *sql.DB, email string) (string, string, string, error) {
+	var id, hashedPass, name string
+	err := db.QueryRow(`SELECT student_id, pass, name FROM students WHERE email=$1`, email).Scan(&id, &hashedPass, &name)
 	if err != nil {
-		return "", "", err
+		return "", "", name, err
 	}
-	return id, hashedPass, nil
+	return id, hashedPass, name, nil
 }
 
-func GetTeacherByEmail(db *sql.DB, email string) (string, string, error) {
-	var id, hashedPass string
-	err := db.QueryRow(`SELECT teacher_id, pass FROM teachers WHERE email=$1`, email).Scan(&id, &hashedPass)
+func GetTeacherByEmail(db *sql.DB, email string) (string, string, string, error) {
+	var id, hashedPass, name string
+	err := db.QueryRow(`SELECT teacher_id, pass, name FROM teachers WHERE email=$1`, email).Scan(&id, &hashedPass, &name)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
-	return id, hashedPass, nil
+	return id, hashedPass, name, nil
 }
 

@@ -27,30 +27,32 @@ func LoginHandler(dbConn *sql.DB) gin.HandlerFunc {
 		}
 
 		// Simplified logic
-		var token string
-		var jwttoken string
+		var token, name, role string
+
 		if req.Role == "student" {
-			id, hashedPass, err := db.GetStudentByEmail(dbConn, req.Email)
+			id, hashedPass, n, err := db.GetStudentByEmail(dbConn, req.Email)
 			if err != nil || bcrypt.CompareHashAndPassword([]byte(hashedPass), []byte(req.Password)) != nil {
 				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 				return
 			}
 			token = id
-			jwttoken = hashedPass
+			name = n
+			role = "student"
 		} else if req.Role == "teacher" {
-			id, hashedPass, err := db.GetTeacherByEmail(dbConn, req.Email)
+			id, hashedPass, n, err := db.GetTeacherByEmail(dbConn, req.Email)
 			if err != nil || bcrypt.CompareHashAndPassword([]byte(hashedPass), []byte(req.Password)) != nil {
 				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 				return
 			}
 			token = id
-			jwttoken = hashedPass
+			name = n
+			role = "teacher"
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "incorrect role"})
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"message": "Login successful", "id": token, "jwt": jwttoken})
+		c.JSON(http.StatusOK, gin.H{"message": "Login successful", "id": token, "name": name, "email": req.Email, "role" : role })
 	}
 }
 
