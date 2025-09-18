@@ -131,3 +131,24 @@ func GetAllLessonJesus(db *sql.DB) ([]models.Lesson,error) {
 
 	return lessons, nil
 }
+
+func GetLesson(db *sql.DB, lessonID string) (models.Lesson, error) {
+	var lesson models.Lesson
+
+	row := db.QueryRow(`
+		SELECT lesson_id, lesson_name, teacher_id, subject
+		FROM lesson
+		WHERE lesson_id = $1
+	`, lessonID)
+
+	err := row.Scan(&lesson.LessonID, &lesson.LessonName, &lesson.TeacherID, &lesson.Subject)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return lesson, fmt.Errorf("no lesson found with ID %s", lessonID)
+		}
+		return lesson, err
+	}
+
+	return lesson, nil
+}
+
