@@ -25,8 +25,8 @@ type CreateModuleRequest struct {
 	LessonID   string            `json:"lesson_id"`
 	ModuleType models.ModuleType `json:"module_type"`
 	ModuleData json.RawMessage   `json:"module_data"` // raw JSON, like your nested object
-	ModuleName string `json:"module_name"`
-	ModuleDesc string `json:"module_description"`
+	ModuleName string            `json:"module_name"`
+	ModuleDesc string            `json:"module_description"`
 }
 
 type ModuleAllRequest struct {
@@ -35,14 +35,14 @@ type ModuleAllRequest struct {
 
 func CreateModule(dbConn *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req CreateModuleRequest
+		var req models.Module
 
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		err := db.CreateModule(dbConn, req.LessonID, string(req.ModuleType), req.ModuleData , req.ModuleName, req.ModuleDesc)
+		err := db.CreateModule(dbConn, req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error":   "Failed to create module in database",

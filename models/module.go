@@ -6,12 +6,14 @@ type ModuleType string
 
 const (
 	VNovel ModuleType = "VNOVEL"
-	Quiz ModuleType = "QUIZ"
+	Quiz   ModuleType = "QUIZ"
 )
 
 type Module struct {
-	ModuleId string `json:"module_id"`
-	ModuleType string `json:"module_type"`
-	ModuleData json.RawMessage `json:"module_data,omitempty"`
-	LessonId string `json:"lesson_id"`
+	ModuleId   string          `json:"module_id"`
+	LessonId   string          `json:"lesson_id"`
+	ModuleType ModuleType      `json:"module_type"`
+	ModuleData json.RawMessage `json:"module_data,omitempty"` // raw JSON, like your nested object
+	ModuleName string          `json:"module_name"`
+	ModuleDesc string          `json:"module_description"`
 }

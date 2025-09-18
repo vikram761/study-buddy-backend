@@ -6,10 +6,10 @@ import (
 	"study-buddy-backend/models"
 )
 
-func CreateModule(db *sql.DB , lessonId, moduleType string, moduleData json.RawMessage , name , desc string) error {
+func CreateModule(db *sql.DB , mod models.Module) error {
 	_, err := db.Exec(`
-		INSERT INTO module (lesson_id, module_type, module_data , module_name , module_desc)
-		VALUES ($1, $2, $3)`, lessonId,moduleType, moduleData,name,desc,
+		INSERT INTO module (lesson_id, module_type, module_data , module_name , module_description)
+		VALUES ($1, $2, $3, $4, $5)`, mod.LessonId,mod.ModuleType, mod.ModuleData, mod.ModuleName, mod.ModuleDesc,
 	)
 	return err
 }
@@ -22,15 +22,14 @@ func FindAllModule(db *sql.DB, teacherID string) ([]models.Module, error) {
 		WHERE lesson_id = $1
 	`, teacherID)
 	if err != nil {
-		return nil, err
-	}
+		return nil, err }
 	defer rows.Close()
 
 	var modules []models.Module
 
 	for rows.Next() {
 		var module models.Module
-		if err := rows.Scan(&module.ModuleId, &module.ModuleType, &module.ModuleData, &module.LessonId); err != nil {
+		if err := rows.Scan(&module.ModuleId, &module.ModuleType, &module.ModuleData, &module.LessonId , &module.ModuleName, &module.ModuleDesc); err != nil {
 			return nil, err
 		}
 		modules = append(modules, module)
