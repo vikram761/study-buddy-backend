@@ -6,6 +6,7 @@ import (
 	"study-buddy-backend/controllers"
 	"study-buddy-backend/controllers/auth"
 	"study-buddy-backend/controllers/lesson"
+	"study-buddy-backend/controllers/student"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -41,11 +42,12 @@ func InitRoutes(port string, db *sql.DB) {
 	// 	// eg: teacher_routes.GET, teacher_routes.POST etc
 	// }
 
-	// student_routes := router.Group("/student")
-	// {
-	// 	// TECHER ROUTES
-	// 	// eg: student_routes.GET, student_routes.POST etc
-	// }
+	student_routes := router.Group("/student")
+	{
+		student_routes.POST("/lessons", student.StudentLessonHandler(db))
+		// TECHER ROUTES
+		// eg: student_routes.GET, student_routes.POST etc
+	}
 
 	lesson_routes := router.Group("/lesson")
 	{

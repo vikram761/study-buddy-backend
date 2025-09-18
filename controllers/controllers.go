@@ -28,7 +28,7 @@ type CreateModuleRequest struct {
 }
 
 type ModuleAllRequest struct {
-	TeacherId string `json:"teacher_id" binding:"required"`
+	LessonId string `json:"lesson_id" binding:"required"`
 }
 
 func CreateModule(dbConn *sql.DB) gin.HandlerFunc {
@@ -63,7 +63,7 @@ func GetAllModule(dbConn *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		modules, err := db.FindAllModule(dbConn, req.TeacherId)
+		modules, err := db.FindAllModule(dbConn, req.LessonId)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

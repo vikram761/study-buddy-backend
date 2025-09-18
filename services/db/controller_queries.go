@@ -18,8 +18,8 @@ func CreateModule(db *sql.DB , lessonId, moduleType string, moduleData json.RawM
 func FindAllModule(db *sql.DB, teacherID string) ([]models.Module, error) {
 	rows, err := db.Query(`
 		SELECT module_id, module_type, module_data, lesson_id
-		FROM lesson
-		WHERE teacher_id = $1
+		FROM module
+		WHERE lesson_id = $1
 	`, teacherID)
 	if err != nil {
 		return nil, err
