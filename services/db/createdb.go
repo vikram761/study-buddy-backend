@@ -48,6 +48,8 @@ END $$;`
 	CREATE TABLE IF NOT EXISTS module (
 		module_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		module_type module_type_enum NOT NULL,
+		module_name VARCHAR(300) NOT NULL,
+		module_description VARCHAR(500) NOT NULL,
 		module_data JSONB,
 		lesson_id UUID NOT NULL,
 		FOREIGN KEY (lesson_id) REFERENCES lesson(lesson_id) ON DELETE CASCADE
