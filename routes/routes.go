@@ -15,18 +15,36 @@ func InitRoutes(port string) {
 		})
 	})
 
+	auth_routes := router.Group("/auth")
+	{
+		// login
+		// sign up
+	}
+
 	teacher_routes := router.Group("/teacher")
 	{
 		// TECHER ROUTES
 		// eg: teacher_routes.GET, teacher_routes.POST etc
 	}
-	
-	student_routes := router.Group("/teacher")
+
+	student_routes := router.Group("/student")
 	{
 		// TECHER ROUTES
 		// eg: student_routes.GET, student_routes.POST etc
 	}
-	
+
+	chapter_routes := router.Group("/chapter")
+	{
+		// chapter routes
+		// create
+		// all
+		// ?chatperId
+	}
+
+	router.POST("/create-vnovel")
+	router.POST("/create-quiz")
+	router.POST("/create-module")
+
 	router.NoRoute(noRoute)
 
 	if err := router.Run(":" + port); err != nil {
