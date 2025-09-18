@@ -12,5 +12,5 @@ type Student struct {
 type StudRelation struct {
 	StudentID string          `json:"student_id"`
 	LessonID  string          `json:"lesson_id"`
-	Stats     json.RawMessage `json:"status"`
+	Stats     json.RawMessage `json:"status,omitempty"`
 }

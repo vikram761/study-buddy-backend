@@ -2,13 +2,14 @@ package db
 
 import (
 	"database/sql"
+	"encoding/json"
 	"study-buddy-backend/models"
 )
 
-func StudentRelation(db *sql.DB, studID string) ([]models.StudRelation ,error) {
+func StudentRelation(db *sql.DB, studID string) ([]models.StudRelation, error) {
 	rows, err := db.Query(`
 		SELECT student_id,lesson_id,status
-		FROM stud_lessson
+		FROM stud_lesson
 		WHERE student_id = $1
 	`, studID)
 	if err != nil {
@@ -20,10 +21,20 @@ func StudentRelation(db *sql.DB, studID string) ([]models.StudRelation ,error) {
 
 	for rows.Next() {
 		var mod models.StudRelation
-		err := rows.Scan(&mod.StudentID, &mod.LessonID, &mod.Stats)
+		var rawStatus sql.NullString
+
+		err := rows.Scan(&mod.StudentID, &mod.LessonID, &rawStatus)
 		if err != nil {
 			return nil, err
 		}
+
+		// Normalize empty values to nil
+		if !rawStatus.Valid || rawStatus.String == "" || rawStatus.String == "null" || rawStatus.String == "{}" || rawStatus.String == "[]" {
+			mod.Stats = nil
+		} else {
+			mod.Stats = json.RawMessage(rawStatus.String)
+		}
+
 		lessons = append(lessons, mod)
 	}
 
